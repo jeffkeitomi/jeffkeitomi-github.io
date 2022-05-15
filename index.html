@@ -14,8 +14,8 @@
       <div class="container">
         <h1>Hello, <span class="text-warning">World!</span></h1>
         <p class="lead my-4">
-          Below is my solution to ICT239 2022-JAN ECA.<br />
-          Of course, my solution might be wrong.
+          Below is my attempt for ICT239 2022-JAN ECA.<br />
+          Of course, my attempt might be wrong.
         </p>
       </div>
     </section>
@@ -27,11 +27,11 @@
             <h2 class="mb-3">Question 1</h2>
             <p>There are 5 datasets:</p>
             <ul>
-              <li>humidity.csv</li>
-              <li>rain.csv</li>
-              <li>temperature.csv</li>
-              <li>wind.csv</li>
-              <li>others.csv</li>
+              <li><a href="Dataset/humidity.csv">humidity.csv</a></li>
+              <li><a href="Dataset/rain.csv">rain.csv</a></li>
+              <li><a href="Dataset/temperature.csv">temperature.csv</a></li>
+              <li><a href="Dataset/wind.csv">wind.csv</a></li>
+              <li><a href="Dataset/others.csv">others.csv</a></li>
             </ul>
             <p>These 5 CSV files are created with some modifications from the original dataset (source: <a href="https://data.cityofchicago.org/Parks-Recreation/Beach-Weather-Stations-Automated-Sensors/k7hf-8y75">https://data.cityofchicago.org/Parks-Recreation/Beach-Weather-Stations-Automated-Sensors/k7hf-8y75</a>). The necessary data dictionary is provided in the given link.</p>
             <p>Each of them is a data stream from some IOT sensors. For example, temperature.csv is the past data stream from temperature sensors. We want to build a simple digital twin (<a href="https://en.wikipedia.org/wiki/Digital_twin">https://en.wikipedia.org/wiki/Digital_twin</a>) to centralize data from all sensors.</p>
@@ -59,7 +59,7 @@
                 
                 <h2 class="accordion-header">
                   <button class="accordion-button collapsed bg-secondary text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#solution-one-a">
-                    My Solution
+                    My Attempt
                   </button>
                 </h2>
                 <div id="solution-one-a" class="accordion-collapse collapse">
@@ -83,8 +83,8 @@ df = pd.concat([df_humidity, df_rain, df_temperature, df_wind, df_others], sort=
 
 display(df)
                     </code></pre>
-                    <strong>Output:</strong>
-                    <div class="dataframe">
+                    <div class="output_area output_html rendered_html output_subarea">
+                      <strong>Output:</strong>
                       <table>
                         <thead>
                           <tr style="text-align: right;">
@@ -347,7 +347,7 @@ display(df)
 
                 <h2 class="accordion-header">
                   <button class="accordion-button collapsed bg-secondary text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#solution-one-b">
-                    My Solution
+                    My Attempt
                   </button>
                 </h2>
                 <div id="solution-one-b" class="accordion-collapse collapse">
@@ -357,8 +357,8 @@ df_sorted = df.sort_values(['Station Name', 'Measurement Timestamp']).reset_inde
 df_enrich = df_sorted.groupby('Station Name')[list(df.columns)].fillna(method='ffill')
 display(df_enrich.head(7))
                     </code></pre>
-                    <strong>Output:</strong>
-                    <div class="dataframe">
+                    <div class="output_area output_html rendered_html output_subarea">
+                      <strong>Output:</strong>
                       <table>
                         <thead>
                           <tr style="text-align: right;">
@@ -540,7 +540,7 @@ display(df_enrich.head(7))
 
                 <h2 class="accordion-header">
                   <button class="accordion-button collapsed bg-secondary text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#solution-one-c">
-                    My Solution
+                    My Attempt
                   </button>
                 </h2>
                 <div id="solution-one-c" class="accordion-collapse collapse">
@@ -550,8 +550,8 @@ df_enrich['Hourly Timestamp'] = pd.to_datetime(df_enrich['Measurement Timestamp'
 df_enrich_hourly_ts = df_enrich.groupby(['Station Name', 'Hourly Timestamp']).last().reset_index()
 display(df_enrich_hourly_ts)
                     </code></pre>
-                    <strong>Output:</strong>
-                    <div class="dataframe">
+                    <div class="output_area output_html rendered_html output_subarea">
+                      <strong>Output:</strong>
                       <table>
                         <thead>
                           <tr style="text-align: right;">
@@ -821,7 +821,7 @@ display(df_enrich_hourly_ts)
 
                 <h2 class="accordion-header">
                   <button class="accordion-button collapsed bg-secondary text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#solution-one-d">
-                    My Solution
+                    My Attempt
                   </button>
                 </h2>
                 <div id="solution-one-d" class="accordion-collapse collapse">
@@ -843,8 +843,8 @@ plt.legend(fontsize='x-large')
 plt.tight_layout()
 plt.show()
                     </code></pre>
-                    <strong>Output:</strong>
-                    <div class="dataframe">
+                    <div class="output_area output_html rendered_html output_subarea">
+                      <strong>Output:</strong>
                       <img src="img/q1d.png">
                     </div>
                   </div>
@@ -856,7 +856,7 @@ plt.show()
 
                 <h2 class="accordion-header">
                   <button class="accordion-button collapsed bg-secondary text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#solution-one-e">
-                    My Solution
+                    My Attempt
                   </button>
                 </h2>
                 <div id="solution-one-e" class="accordion-collapse collapse">
@@ -871,8 +871,8 @@ ax.set_title('Scatterplot of Humidity vs Rain Intensity', fontsize='xx-large')
 ax.set_xlabel('Humidity', fontsize='x-large')
 ax.set_ylabel('Rain Intensity', fontsize='x-large')
                     </code></pre>
-                    <strong>Output:</strong>
-                    <div class="dataframe">
+                    <div class="output_area output_html rendered_html output_subarea">
+                      <strong>Output:</strong>
                       <img src="img/q1e.png">
                     </div>
                   </div>
@@ -880,7 +880,167 @@ ax.set_ylabel('Rain Intensity', fontsize='x-large')
               </li>
             </ol>
             <h2 class="mb-3">Question 2</h2>
-            <p>AKAN DATANG...</p>
+            <ol type="a">
+              <li class="mb-3">
+                <p>Scrape the family tree of British monarchs (<a href="https://en.wikipedia.org/w/index.php?title=Family_tree_of_British_monarchs&oldid=1043575587">https://en.wikipedia.org/w/index.php?title=Family_tree_of_British_monarchs&oldid=1043575587</a>) by applying (using) <strong>BeautifulSoup</strong> library and store them into a SQLite table british_monarch_family_tree using <strong>SQLite3</strong> library with the following fields:</p>
+                <ul>
+                  <li>id: the primary key</li>
+                  <li>name</li>
+                  <li>wiki_url</li>
+                </ul>
+                <p style="text-align: right;">(15 marks)</p>
+
+                <h2 class="accordion-header">
+                  <button class="accordion-button collapsed bg-secondary text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#solution-two-a">
+                    My Attempt
+                  </button>
+                </h2>
+                <div id="solution-two-a" class="accordion-collapse collapse">
+                  <div class="accordion-body bg-light text-dark mb-3">
+                    <pre><code>
+Akan Datang!
+                    </code></pre>
+                    <div class="output_area output_html rendered_html output_subarea">
+                      <strong>Output:</strong>
+                      <p>N.A.</p>
+                    </div>
+                  </div>
+                </div>
+              </li>
+
+              <li class="mb-3">
+                <p>
+                  Apply <strong>SQLite3</strong> library to add two new fields into the british_monarch_family_tree table
+                  <ul>
+                    <li>father_id: references to the field <i>british_monarch_family_tree.id</i></li>
+                    <li>mother_id: references to the field <i>british_monarch_family_tree.id</i></li>
+                  </ul>
+                </p>
+                <p>
+                  Then follow each Wikipedia URL stored in the table british_monarch_family_tree, which is scraped in the Q2(a), to scrape the father and mother information of each king/queen
+                  <ul>
+                    <li>If there is no father / mother information, put null value under father_id / mother_id.</li>
+                    <li>If a father or mother does not exist in the british_monarch_family_tree table, insert him/her into the british_monarch_family_tree table</li>
+                    <li>Set the father_id and mother_id fields to represent the father and mother relationships</li>
+                  </ul>
+                </p>
+                <p>
+                  For example, there are 3 rows:
+                  <ul>
+                    <li>(id: 1, name: A, wiki_url: A_url, father_id: null, mother_id: null)</li>
+                    <li>(id: 2, name: B, wiki_url: B_url, father_id: null, mother_id: null)</li>
+                    <li>(id: 3, name: C, wiki_url: C_url, father_id: 1, mother_id: 2)</li>
+                  </ul>
+                </p>
+                <p>These rows indicate that A is the father of C, and B is the mother of C. The null value of father_id / mother_id means that there is no father / mother information.</p>
+                <p style="text-align: right;">(15 marks)</p>
+
+                <h2 class="accordion-header">
+                  <button class="accordion-button collapsed bg-secondary text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#solution-two-b">
+                    My Attempt
+                  </button>
+                </h2>
+                <div id="solution-two-b" class="accordion-collapse collapse">
+                  <div class="accordion-body bg-light text-dark mb-3">
+                    <pre><code>
+Akan Datang!
+                    </code></pre>
+                    <div class="output_area output_html rendered_html output_subarea">
+                      <strong>Output:</strong>
+                      <p>N.A.</p>
+                    </div>
+                  </div>
+                </div>
+              </li>
+
+              <li class="mb-3">
+                <p>Apply <strong>SQLite3</strong> library to find all children of King "George III" (<a href="https://en.wikipedia.org/wiki/George_III">https://en.wikipedia.org/wiki/George_III</a>).</p>
+                <p style="text-align: right;">(6 marks)</p>
+
+                <h2 class="accordion-header">
+                  <button class="accordion-button collapsed bg-secondary text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#solution-two-c">
+                    My Attempt
+                  </button>
+                </h2>
+                <div id="solution-two-c" class="accordion-collapse collapse">
+                  <div class="accordion-body bg-light text-dark mb-3">
+                    <pre><code>
+Akan Datang!
+                    </code></pre>
+                    <div class="output_area output_html rendered_html output_subarea">
+                      <strong>Output:</strong>
+                      <p>N.A.</p>
+                    </div>
+                  </div>
+                </div>
+              </li>
+
+              <li class="mb-3">
+                <p>Apply <strong>SQLite3</strong> library to find the father and mother of King "George III" (<a href="https://en.wikipedia.org/wiki/George_III">https://en.wikipedia.org/wiki/George_III</a>).</p>
+                <p style="text-align: right;">(6 marks)</p>
+
+                <h2 class="accordion-header">
+                  <button class="accordion-button collapsed bg-secondary text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#solution-two-d">
+                    My Attempt
+                  </button>
+                </h2>
+                <div id="solution-two-d" class="accordion-collapse collapse">
+                  <div class="accordion-body bg-light text-dark mb-3">
+                    <pre><code>
+Akan Datang!
+                    </code></pre>
+                    <div class="output_area output_html rendered_html output_subarea">
+                      <strong>Output:</strong>
+                      <p>N.A.</p>
+                    </div>
+                  </div>
+                </div>
+              </li>
+
+              <li class="mb-3">
+                <p>Apply <strong>SQLite3</strong> library to find all siblings of King "George IV" (<a href="https://en.wikipedia.org/wiki/George_IV">https://en.wikipedia.org/wiki/George_IV</a>)</p>
+                <p style="text-align: right;">(6 marks)</p>
+
+                <h2 class="accordion-header">
+                  <button class="accordion-button collapsed bg-secondary text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#solution-two-e">
+                    My Attempt
+                  </button>
+                </h2>
+                <div id="solution-two-e" class="accordion-collapse collapse">
+                  <div class="accordion-body bg-light text-dark mb-3">
+                    <pre><code>
+Akan Datang!
+                    </code></pre>
+                    <div class="output_area output_html rendered_html output_subarea">
+                      <strong>Output:</strong>
+                      <p>N.A.</p>
+                    </div>
+                  </div>
+                </div>
+              </li>
+
+              <li class="mb-3">
+                <p>Apply <strong>SQLite3/Dataframe</strong> library to find all descendants of "Queen Victoria" (<a href="https://en.wikipedia.org/wiki/Queen_Victoria">https://en.wikipedia.org/wiki/Queen_Victoria</a>) from the table british_monarch_family_tree.</p>
+                <p style="text-align: right;">(7 marks)</p>
+
+                <h2 class="accordion-header">
+                  <button class="accordion-button collapsed bg-secondary text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#solution-two-f">
+                    My Attempt
+                  </button>
+                </h2>
+                <div id="solution-two-f" class="accordion-collapse collapse">
+                  <div class="accordion-body bg-light text-dark mb-3">
+                    <pre><code>
+Akan Datang!
+                    </code></pre>
+                    <div class="output_area output_html rendered_html output_subarea">
+                      <strong>Output:</strong>
+                      <p>N.A.</p>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            </ol>
           </div>
         </div>
       </div>
