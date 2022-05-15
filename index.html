@@ -353,8 +353,7 @@ display(df)
                 <div id="solution-one-b" class="accordion-collapse collapse">
                   <div class="accordion-body bg-light text-dark mb-3">
                     <pre><code>
-df_sorted = df.sort_values(['Station Name', 'Measurement Timestamp']).reset_index(drop=True)
-df_enrich = df_sorted.groupby('Station Name')[list(df.columns)].fillna(method='ffill')
+df_enrich = df.sort_values(['Station Name', 'Measurement Timestamp']).reset_index(drop=True).groupby('Station Name')[list(df.columns)].fillna(method='ffill')
 display(df_enrich.head(7))
                     </code></pre>
                     <div class="output_area output_html rendered_html output_subarea">
@@ -898,7 +897,11 @@ ax.set_ylabel('Rain Intensity', fontsize='x-large')
                 <div id="solution-two-a" class="accordion-collapse collapse">
                   <div class="accordion-body bg-light text-dark mb-3">
                     <pre><code>
-Akan Datang!
+import requests
+from bs4 import BeautifulSoup
+import sqlite3
+
+database = 'british_monarch_family_tree.sqlite'
                     </code></pre>
                     <div class="output_area output_html rendered_html output_subarea">
                       <strong>Output:</strong>
