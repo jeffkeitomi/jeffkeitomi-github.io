@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="style.css">
+    <title>Hello, World!</title>
+  </head>
+  <body class="bg-dark text-light">
+    <section class="py-5">
+      <div class="container">
+        <h1>Hello, <span class="text-warning">World!</span></h1>
+        <p class="lead my-4">
+          Below is my solution to ICT239 2022-JAN ECA.<br />
+          Of course, my solution might be wrong.
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="row align-items-center justify-content-between">
+          <div class="col-md">
+            <h2 class="mb-3">Question 1</h2>
+            <p>There are 5 datasets:</p>
+            <ul>
+              <li>humidity.csv</li>
+              <li>rain.csv</li>
+              <li>temperature.csv</li>
+              <li>wind.csv</li>
+              <li>others.csv</li>
+            </ul>
+            <p>These 5 CSV files are created with some modifications from the original dataset (source: <a href="https://data.cityofchicago.org/Parks-Recreation/Beach-Weather-Stations-Automated-Sensors/k7hf-8y75">https://data.cityofchicago.org/Parks-Recreation/Beach-Weather-Stations-Automated-Sensors/k7hf-8y75</a>). The necessary data dictionary is provided in the given link.</p>
+            <p>Each of them is a data stream from some IOT sensors. For example, temperature.csv is the past data stream from temperature sensors. We want to build a simple digital twin (<a href="https://en.wikipedia.org/wiki/Digital_twin">https://en.wikipedia.org/wiki/Digital_twin</a>) to centralize data from all sensors.</p>
+            <p>A record in each CSV file can be identified uniquely by (Station Name, Measurement Timestamp).</p>
+            <ol type="a">
+              <li class="mb-3">
+                <p>Load in the 5 CSV files into 5 dataframe respectively and develop (perform) the following <b>TWO (2)</b> steps:</p>
+                <p>
+                  <b>Step 1</b>: For each dataframe of sensor readings, we introduce a new column called "Sensor Type".
+                  <ul>
+                    <li>For the humidity dataset, the field "Sensor Type" of all rows has the value of "humidity".</li>
+                    <li>For the rain dataset, the field "Sensor Type" of all rows has the value of "rain".</li>
+                    <li>For the temperature dataset, the field "Sensor Type" of all rows has the value of "temperature".</li>
+                    <li>For the wind dataset, the field "Sensor Type" of all rows has the value of "wind".</li>
+                    <li>For the others dataset, the field "Sensor Type" of all rows has the value of "others".</li>
+                  </ul>
+                </p>
+                <p>
+                  <b>Step 2</b>: Combine 5 dataframes into <b>ONE (1)</b> dataframe and sort it by <i>Measurement Timestamp</i> ascendingly
+                  <ul>
+                    <li>The resulted data frame contains these columns: <i>Station Name, Measurement Timestamp, Sensor Type, Air Temperature, Wet Bulb Temperature, Humidity, Rain Intensity, Interval Rain, Total Rain, Precipitation Type, Wind Direction, Wind Speed, Maximum Wind Speed, Barometric Pressure, Solar Radiation, Heading,</i> and <i>Battery Life</i>.</li>
+                  </ul>
+                </p>
+                <p style="text-align: right;">(5 marks)</p>
+                
+                <h2 class="accordion-header">
+                  <button class="accordion-button collapsed bg-secondary text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#solution-one-a">
+                    My Solution
+                  </button>
+                </h2>
+                <div id="solution-one-a" class="accordion-collapse collapse">
+                  <div class="accordion-body bg-light text-dark mb-3">
+                    <pre><code>
+import pandas as pd
+
+df_humidity = pd.read_csv('Dataset/humidity.csv')
+df_rain = pd.read_csv('Dataset/rain.csv')
+df_temperature = pd.read_csv('Dataset/temperature.csv')
+df_wind = pd.read_csv('Dataset/wind.csv')
+df_others = pd.read_csv('Dataset/others.csv')
+
+df_humidity['Sensor Type'] = 'humidity'
+df_rain['Sensor Type'] = 'rain'
+df_temperature['Sensor Type'] = 'temperature'
+df_wind['Sensor Type'] = 'wind'
+df_others['Sensor Type'] = 'others'
+
+df = pd.concat([df_humidity, df_rain, df_temperature, df_wind, df_others], sort=False).sort_values(by='Measurement Timestamp').reset_index(drop=True)
+
+display(df)
+                    </code></pre>
+                    <strong>Output:</strong>
+                    <div class="dataframe">
+                      <table>
+                        <thead>
+                          <tr style="text-align: right;">
+                            <th></th>
+                            <th>Station Name</th>
+                            <th>Measurement Timestamp</th>
+                            <th>Humidity</th>
+                            <th>Sensor Type</th>
+                            <th>Rain Intensity</th>
+                            <th>Interval Rain</th>
+                            <th>Total Rain</th>
+                            <th>Air Temperature</th>
+                            <th>Wet Bulb Temperature</th>
+                            <th>Wind Direction</th>
+                            <th>Wind Speed</th>
+                            <th>Maximum Wind Speed</th>
+                            <th>Heading</th>
+                            <th>Precipitation Type</th>
+                            <th>Barometric Pressure</th>
+                            <th>Solar Radiation</th>
+                            <th>Battery Life</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <th>0</th>
+                            <td>Oak Street Weather Station</td>
+                            <td>2021-05-17 14:59:59.129877</td>
+                            <td>74.0</td>
+                            <td>humidity</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                          </tr>
+                          <tr>
+                            <th>1</th>
+                            <td>63rd Street Weather Station</td>
+                            <td>2021-05-17 14:59:59.380916</td>
+                            <td>NaN</td>
+                            <td>temperature</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>15.70</td>
+                            <td>14.0</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                          </tr>
+                          <tr>
+                            <th>2</th>
+                            <td>Oak Street Weather Station</td>
+                            <td>2021-05-17 14:59:59.450670</td>
+                            <td>NaN</td>
+                            <td>others</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>0.0</td>
+                            <td>1001.5</td>
+                            <td>340.0</td>
+                            <td>12.1</td>
+                          </tr>
+                          <tr>
+                            <th>3</th>
+                            <td>Foster Weather Station</td>
+                            <td>2021-05-17 14:59:59.547722</td>
+                            <td>NaN</td>
+                            <td>rain</td>
+                            <td>NaN</td>
+                            <td>0.0</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                          </tr>
+                          <tr>
+                            <th>4</th>
+                            <td>Foster Weather Station</td>
+                            <td>2021-05-17 14:59:59.643309</td>
+                            <td>NaN</td>
+                            <td>wind</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>0.0</td>
+                            <td>3.3</td>
+                            <td>0.0</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                          </tr>
+                          <tr>
+                            <th>...</th>
+                            <td>...</td>
+                            <td>...</td>
+                            <td>...</td>
+                            <td>...</td>
+                            <td>...</td>
+                            <td>...</td>
+                            <td>...</td>
+                            <td>...</td>
+                            <td>...</td>
+                            <td>...</td>
+                            <td>...</td>
+                            <td>...</td>
+                            <td>...</td>
+                            <td>...</td>
+                            <td>...</td>
+                            <td>...</td>
+                            <td>...</td>
+                          </tr>
+                          <tr>
+                            <th>74245</th>
+                            <td>Oak Street Weather Station</td>
+                            <td>2021-12-18 05:00:00.047692</td>
+                            <td>NaN</td>
+                            <td>temperature</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>3.50</td>
+                            <td>2.8</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                          </tr>
+                          <tr>
+                            <th>74246</th>
+                            <td>Foster Weather Station</td>
+                            <td>2021-12-18 05:00:00.378254</td>
+                            <td>NaN</td>
+                            <td>wind</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>0.0</td>
+                            <td>3.3</td>
+                            <td>0.0</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                          </tr>
+                          <tr>
+                            <th>74247</th>
+                            <td>Oak Street Weather Station</td>
+                            <td>2021-12-18 05:00:00.581663</td>
+                            <td>90.0</td>
+                            <td>humidity</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                          </tr>
+                          <tr>
+                            <th>74248</th>
+                            <td>Foster Weather Station</td>
+                            <td>2021-12-18 05:00:00.608831</td>
+                            <td>80.0</td>
+                            <td>humidity</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                          </tr>
+                          <tr>
+                            <th>74249</th>
+                            <td>Foster Weather Station</td>
+                            <td>2021-12-18 05:00:00.840602</td>
+                            <td>NaN</td>
+                            <td>temperature</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>2.67</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <p>74250 rows × 17 columns</p>
+                    </div>
+                  </div>
+                </div>
+              </li>
+              <li class="mb-3">
+                <p>We target to develop and enrich the dataframe outputted from <b>Q1(a)</b> to represent the digital twin with data from all sensors. You may find more information about digital twin from <a href="https://en.wikipedia.org/wiki/Digital_twin">https://en.wikipedia.org/wiki/Digital_twin</a></p>
+                <p><b>PER</b> station name and <b>PER</b> measurement timestamp <b>T</b> from <b>Q1(a)</b> dataframe, we enrich <b><u>each</u></b> row to contain all <b><u>latest</u></b> sensor values up until the timestamp <b>T</b> <b><u>inclusively</u></b> for that station name.</p>
+                <p>For example, (shown in Figure 1), for the row with index 0 (63rd Street Weather Station, 2021-05-17 14:59:59:380916…), the value is obtained from temperature dataset (indicated with value “temperature” under <i>Sensor Type</i> column in Figure 1) and its value 15.7 in column <i>Air Temperature</i> has the latest value of all Air Temperature sensor readings recorded before 14:59:59:380916 inclusively gathered by the station 63rd Street Weather Station.</p>
+                <p>For the row with index 1 (63rd Street Weather Station, 2021-05-17 14:59:59:380916…), the values are obtained from rain dataset (<i>Rain Intensity, Interval Rain, Total Rain</i> columns) and the value in Air Temperature is copied from previous row (row with index 0).</p>
+                <p>Another example is to look at the row with index 6, only the value in <i>Humidity</i> column is updated to 84.0 and the rest of values in the row are copied from previous row (row with index 5).</p>
+                <p>Apply this logic to enrich all rows of the dataframe that obtained from Q<b>1(a)</b>.</p>
+                <p style="text-align: right;">(10 marks)</p>
+
+                <h2 class="accordion-header">
+                  <button class="accordion-button collapsed bg-secondary text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#solution-one-b">
+                    My Solution
+                  </button>
+                </h2>
+                <div id="solution-one-b" class="accordion-collapse collapse">
+                  <div class="accordion-body bg-light text-dark mb-3">
+                    <pre><code>
+df_sorted = df.sort_values(['Station Name', 'Measurement Timestamp']).reset_index(drop=True)
+df_enrich = df_sorted.groupby('Station Name')[list(df.columns)].fillna(method='ffill')
+display(df_enrich.head(7))
+                    </code></pre>
+                    <strong>Output:</strong>
+                    <div class="dataframe">
+                      <table>
+                        <thead>
+                          <tr style="text-align: right;">
+                            <th></th>
+                            <th>Station Name</th>
+                            <th>Measurement Timestamp</th>
+                            <th>Humidity</th>
+                            <th>Sensor Type</th>
+                            <th>Rain Intensity</th>
+                            <th>Interval Rain</th>
+                            <th>Total Rain</th>
+                            <th>Air Temperature</th>
+                            <th>Wet Bulb Temperature</th>
+                            <th>Wind Direction</th>
+                            <th>Wind Speed</th>
+                            <th>Maximum Wind Speed</th>
+                            <th>Heading</th>
+                            <th>Precipitation Type</th>
+                            <th>Barometric Pressure</th>
+                            <th>Solar Radiation</th>
+                            <th>Battery Life</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <th>0</th>
+                            <td>63rd Street Weather Station</td>
+                            <td>2021-05-17 14:59:59.380916</td>
+                            <td>NaN</td>
+                            <td>temperature</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>15.7</td>
+                            <td>14.0</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                          </tr>
+                          <tr>
+                            <th>1</th>
+                            <td>63rd Street Weather Station</td>
+                            <td>2021-05-17 14:59:59.956473</td>
+                            <td>NaN</td>
+                            <td>rain</td>
+                            <td>0.0</td>
+                            <td>0.0</td>
+                            <td>11.0</td>
+                            <td>15.7</td>
+                            <td>14.0</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                          </tr>
+                          <tr>
+                            <th>2</th>
+                            <td>63rd Street Weather Station</td>
+                            <td>2021-05-17 15:00:00.321877</td>
+                            <td>NaN</td>
+                            <td>wind</td>
+                            <td>0.0</td>
+                            <td>0.0</td>
+                            <td>11.0</td>
+                            <td>15.7</td>
+                            <td>14.0</td>
+                            <td>51.0</td>
+                            <td>1.3</td>
+                            <td>2.7</td>
+                            <td>352.0</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                          </tr>
+                          <tr>
+                            <th>3</th>
+                            <td>63rd Street Weather Station</td>
+                            <td>2021-05-17 15:00:00.741304</td>
+                            <td>NaN</td>
+                            <td>others</td>
+                            <td>0.0</td>
+                            <td>0.0</td>
+                            <td>11.0</td>
+                            <td>15.7</td>
+                            <td>14.0</td>
+                            <td>51.0</td>
+                            <td>1.3</td>
+                            <td>2.7</td>
+                            <td>352.0</td>
+                            <td>0.0</td>
+                            <td>1000.6</td>
+                            <td>467.0</td>
+                            <td>11.8</td>
+                          </tr>
+                          <tr>
+                            <th>4</th>
+                            <td>63rd Street Weather Station</td>
+                            <td>2021-05-17 15:00:00.889681</td>
+                            <td>83.0</td>
+                            <td>humidity</td>
+                            <td>0.0</td>
+                            <td>0.0</td>
+                            <td>11.0</td>
+                            <td>15.7</td>
+                            <td>14.0</td>
+                            <td>51.0</td>
+                            <td>1.3</td>
+                            <td>2.7</td>
+                            <td>352.0</td>
+                            <td>0.0</td>
+                            <td>1000.6</td>
+                            <td>467.0</td>
+                            <td>11.8</td>
+                          </tr>
+                          <tr>
+                            <th>5</th>
+                            <td>63rd Street Weather Station</td>
+                            <td>2021-05-17 15:59:59.209392</td>
+                            <td>83.0</td>
+                            <td>rain</td>
+                            <td>0.0</td>
+                            <td>0.0</td>
+                            <td>11.0</td>
+                            <td>15.7</td>
+                            <td>14.0</td>
+                            <td>51.0</td>
+                            <td>1.3</td>
+                            <td>2.7</td>
+                            <td>352.0</td>
+                            <td>0.0</td>
+                            <td>1000.6</td>
+                            <td>467.0</td>
+                            <td>11.8</td>
+                          </tr>
+                          <tr>
+                            <th>6</th>
+                            <td>63rd Street Weather Station</td>
+                            <td>2021-05-17 15:59:59.424498</td>
+                            <td>84.0</td>
+                            <td>humidity</td>
+                            <td>0.0</td>
+                            <td>0.0</td>
+                            <td>11.0</td>
+                            <td>15.7</td>
+                            <td>14.0</td>
+                            <td>51.0</td>
+                            <td>1.3</td>
+                            <td>2.7</td>
+                            <td>352.0</td>
+                            <td>0.0</td>
+                            <td>1000.6</td>
+                            <td>467.0</td>
+                            <td>11.8</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </li>
+              <li class="mb-3">
+                <p>
+                  <b>Per</b> Station Name, we want to formulate and analyse the enriched reading stream from Q<b>1(b)</b> at 1-hour interval.<br />
+                  For example, we break the day (on 2021-05-17) into 2021-05-17 00:00:00, 2021-05-17 01:00:00, ..., 2021-05-17 23:00:00. We break the day (on 2021-05-18) into 2021-05-18 00:00:00, 2021-05-18 01:00:00, etc.
+                </p>
+                <p>Sometimes, there is a delay in sending back the readings by IOT sensors, we consider a 15 minutes 59 seconds’ delay is acceptable in our analysis. Therefore, we split the global time clock into <b>non-overlapping</b> windows, e.g.: [2021-05-17 00:16:00, 2021-05-17 01:15:59], [2021-05-17 01:16:00, 2021-05-17 02:15:59], and so on. Data received within the window [2021-05-17 00:16:00, 2021-05-17 01:15:59] shall belong to the hourly timestamp 2021-05-17 01:00:00.</p>
+                <p>Per station, for records (rows) with <i>Measurement Timestamp</i> in between a window, we keep only the record (its sensor values) with the <b><u>latest</u></b> <i>Measurement Timestamp</i> to represent that window. For example, for a station, there are 10 records in between [2021-05-17 00:16:00, 2021-05-17 01:15:59], we keep only 1 record with the <b><u>latest</u></b> <i>Measurement Timestamp</i> and set its <i>Hourly Timestamp</i> to 2021-05-17 01:00:00, and discard the other 9 rows of this time window. As a result, we have a new stream of readings at 1 hour interval per Station Name.</p>
+                <p style="text-align: right;">(10 marks)</p>
+
+                <h2 class="accordion-header">
+                  <button class="accordion-button collapsed bg-secondary text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#solution-one-c">
+                    My Solution
+                  </button>
+                </h2>
+                <div id="solution-one-c" class="accordion-collapse collapse">
+                  <div class="accordion-body bg-light text-dark mb-3">
+                    <pre><code>
+df_enrich['Hourly Timestamp'] = pd.to_datetime(df_enrich['Measurement Timestamp']).apply(lambda ts: ts.ceil('h') if ts.minute >= 16 else ts.floor('h'))
+df_enrich_hourly_ts = df_enrich.groupby(['Station Name', 'Hourly Timestamp']).last().reset_index()
+display(df_enrich_hourly_ts)
+                    </code></pre>
+                    <strong>Output:</strong>
+                    <div class="dataframe">
+                      <table>
+                        <thead>
+                          <tr style="text-align: right;">
+                            <th></th>
+                            <th>Station Name</th>
+                            <th>Hourly Timestamp</th>
+                            <th>Measurement Timestamp</th>
+                            <th>Humidity</th>
+                            <th>Sensor Type</th>
+                            <th>Rain Intensity</th>
+                            <th>Interval Rain</th>
+                            <th>Total Rain</th>
+                            <th>Air Temperature</th>
+                            <th>Wet Bulb Temperature</th>
+                            <th>Wind Direction</th>
+                            <th>Wind Speed</th>
+                            <th>Maximum Wind Speed</th>
+                            <th>Heading</th>
+                            <th>Precipitation Type</th>
+                            <th>Barometric Pressure</th>
+                            <th>Solar Radiation</th>
+                            <th>Battery Life</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <th>0</th>
+                            <td>63rd Street Weather Station</td>
+                            <td>2021-05-17 15:00:00</td>
+                            <td>2021-05-17 15:00:00.889681</td>
+                            <td>83.0</td>
+                            <td>humidity</td>
+                            <td>0.0</td>
+                            <td>0.0</td>
+                            <td>11.0</td>
+                            <td>15.7</td>
+                            <td>14.0</td>
+                            <td>51.0</td>
+                            <td>1.3</td>
+                            <td>2.7</td>
+                            <td>352.0</td>
+                            <td>0.0</td>
+                            <td>1000.6</td>
+                            <td>467.0</td>
+                            <td>11.8</td>
+                          </tr>
+                          <tr>
+                            <th>1</th>
+                            <td>63rd Street Weather Station</td>
+                            <td>2021-05-17 16:00:00</td>
+                            <td>2021-05-17 16:00:00.452415</td>
+                            <td>84.0</td>
+                            <td>others</td>
+                            <td>0.0</td>
+                            <td>0.0</td>
+                            <td>11.0</td>
+                            <td>16.1</td>
+                            <td>14.4</td>
+                            <td>51.0</td>
+                            <td>1.1</td>
+                            <td>1.9</td>
+                            <td>351.0</td>
+                            <td>0.0</td>
+                            <td>1000.3</td>
+                            <td>283.0</td>
+                            <td>11.9</td>
+                          </tr>
+                          <tr>
+                            <th>2</th>
+                            <td>63rd Street Weather Station</td>
+                            <td>2021-05-17 17:00:00</td>
+                            <td>2021-05-17 17:00:00.459542</td>
+                            <td>81.0</td>
+                            <td>temperature</td>
+                            <td>0.0</td>
+                            <td>0.0</td>
+                            <td>11.0</td>
+                            <td>15.7</td>
+                            <td>13.8</td>
+                            <td>85.0</td>
+                            <td>1.0</td>
+                            <td>2.3</td>
+                            <td>351.0</td>
+                            <td>0.0</td>
+                            <td>1000.4</td>
+                            <td>196.0</td>
+                            <td>11.9</td>
+                          </tr>
+                          <tr>
+                            <th>3</th>
+                            <td>63rd Street Weather Station</td>
+                            <td>2021-05-17 18:00:00</td>
+                            <td>2021-05-17 18:00:00.853017</td>
+                            <td>89.0</td>
+                            <td>others</td>
+                            <td>0.0</td>
+                            <td>0.0</td>
+                            <td>11.0</td>
+                            <td>14.6</td>
+                            <td>13.5</td>
+                            <td>80.0</td>
+                            <td>2.5</td>
+                            <td>3.6</td>
+                            <td>351.0</td>
+                            <td>0.0</td>
+                            <td>1000.6</td>
+                            <td>145.0</td>
+                            <td>11.9</td>
+                          </tr>
+                          <tr>
+                            <th>4</th>
+                            <td>63rd Street Weather Station</td>
+                            <td>2021-05-17 19:00:00</td>
+                            <td>2021-05-17 19:00:00.677726</td>
+                            <td>89.0</td>
+                            <td>others</td>
+                            <td>0.0</td>
+                            <td>0.0</td>
+                            <td>11.0</td>
+                            <td>14.4</td>
+                            <td>13.3</td>
+                            <td>10.0</td>
+                            <td>1.4</td>
+                            <td>2.2</td>
+                            <td>350.0</td>
+                            <td>60.0</td>
+                            <td>1000.4</td>
+                            <td>155.0</td>
+                            <td>11.9</td>
+                          </tr>
+                          <tr>
+                            <th>...</th>
+                            <td>...</td>
+                            <td>...</td>
+                            <td>...</td>
+                            <td>...</td>
+                            <td>...</td>
+                            <td>...</td>
+                            <td>...</td>
+                            <td>...</td>
+                            <td>...</td>
+                            <td>...</td>
+                            <td>...</td>
+                            <td>...</td>
+                            <td>...</td>
+                            <td>...</td>
+                            <td>...</td>
+                            <td>...</td>
+                            <td>...</td>
+                            <td>...</td>
+                          </tr>
+                          <tr>
+                            <th>14845</th>
+                            <td>Oak Street Weather Station</td>
+                            <td>2021-12-18 01:00:00</td>
+                            <td>2021-12-18 00:59:59.922906</td>
+                            <td>65.0</td>
+                            <td>others</td>
+                            <td>0.0</td>
+                            <td>0.1</td>
+                            <td>25.7</td>
+                            <td>5.1</td>
+                            <td>2.6</td>
+                            <td>110.0</td>
+                            <td>3.8</td>
+                            <td>5.3</td>
+                            <td>357.0</td>
+                            <td>0.0</td>
+                            <td>995.9</td>
+                            <td>0.0</td>
+                            <td>11.9</td>
+                          </tr>
+                          <tr>
+                            <th>14846</th>
+                            <td>Oak Street Weather Station</td>
+                            <td>2021-12-18 02:00:00</td>
+                            <td>2021-12-18 02:00:00.871278</td>
+                            <td>77.0</td>
+                            <td>rain</td>
+                            <td>0.6</td>
+                            <td>0.9</td>
+                            <td>26.5</td>
+                            <td>3.8</td>
+                            <td>2.2</td>
+                            <td>110.0</td>
+                            <td>4.2</td>
+                            <td>6.3</td>
+                            <td>357.0</td>
+                            <td>60.0</td>
+                            <td>995.2</td>
+                            <td>0.0</td>
+                            <td>11.9</td>
+                          </tr>
+                          <tr>
+                            <th>14847</th>
+                            <td>Oak Street Weather Station</td>
+                            <td>2021-12-18 03:00:00</td>
+                            <td>2021-12-18 03:00:00.643588</td>
+                            <td>81.0</td>
+                            <td>humidity</td>
+                            <td>0.0</td>
+                            <td>0.0</td>
+                            <td>26.6</td>
+                            <td>3.9</td>
+                            <td>2.6</td>
+                            <td>104.0</td>
+                            <td>4.6</td>
+                            <td>6.0</td>
+                            <td>357.0</td>
+                            <td>0.0</td>
+                            <td>994.8</td>
+                            <td>0.0</td>
+                            <td>11.9</td>
+                          </tr>
+                          <tr>
+                            <th>14848</th>
+                            <td>Oak Street Weather Station</td>
+                            <td>2021-12-18 04:00:00</td>
+                            <td>2021-12-18 04:00:00.650439</td>
+                            <td>87.0</td>
+                            <td>wind</td>
+                            <td>0.0</td>
+                            <td>0.1</td>
+                            <td>26.7</td>
+                            <td>3.6</td>
+                            <td>2.7</td>
+                            <td>74.0</td>
+                            <td>4.8</td>
+                            <td>6.1</td>
+                            <td>357.0</td>
+                            <td>0.0</td>
+                            <td>994.8</td>
+                            <td>0.0</td>
+                            <td>11.9</td>
+                          </tr>
+                          <tr>
+                            <th>14849</th>
+                            <td>Oak Street Weather Station</td>
+                            <td>2021-12-18 05:00:00</td>
+                            <td>2021-12-18 05:00:00.581663</td>
+                            <td>90.0</td>
+                            <td>humidity</td>
+                            <td>0.0</td>
+                            <td>0.0</td>
+                            <td>26.7</td>
+                            <td>3.5</td>
+                            <td>2.8</td>
+                            <td>67.0</td>
+                            <td>4.8</td>
+                            <td>6.6</td>
+                            <td>357.0</td>
+                            <td>0.0</td>
+                            <td>994.6</td>
+                            <td>0.0</td>
+                            <td>12.0</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <p>14850 rows × 18 columns</p>
+                    </div>
+                  </div>
+                </div>
+              </li>
+              <li class="mb-3">
+                <p>On a <b><u>SINGLE</u></b> diagram, design and visualize the air temperature of each station name along their hourly timestamp. Share <b>TWO (2)</b> insights which you may draw from the diagram.</p>
+                <p style="text-align: right;">(10 marks)</p>
+
+                <h2 class="accordion-header">
+                  <button class="accordion-button collapsed bg-secondary text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#solution-one-d">
+                    My Solution
+                  </button>
+                </h2>
+                <div id="solution-one-d" class="accordion-collapse collapse">
+                  <div class="accordion-body bg-light text-dark mb-3">
+                    <pre><code>
+%matplotlib inline
+import matplotlib.pyplot as plt
+
+plt.style.use('seaborn')
+plt.figure(figsize=(15, 10))
+
+for station_name in df_enrich_hourly_ts['Station Name'].unique():
+    df_enrich_hourly_ts[df_enrich_hourly_ts['Station Name'] == station_name].set_index('Hourly Timestamp')['Air Temperature'].plot(label=station_name, legend=True)
+
+plt.title('Hourly Air temperature', fontsize='xx-large')
+plt.xlabel('Hourly Timestamp', fontsize='x-large')
+plt.ylabel('Air Temperature', fontsize='x-large')
+plt.legend(fontsize='x-large')
+plt.tight_layout()
+plt.show()
+                    </code></pre>
+                    <strong>Output:</strong>
+                    <div class="dataframe">
+                      <img src="img/q1d.png">
+                    </div>
+                  </div>
+                </div>
+              </li>
+              <li class="mb-3">
+                <p>Design and visualize the correlation between humidity and rain intensity when it is rainy. Share insights which you may draw from the diagram.</p>
+                <p style="text-align: right;">(10 marks)</p>
+
+                <h2 class="accordion-header">
+                  <button class="accordion-button collapsed bg-secondary text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#solution-one-e">
+                    My Solution
+                  </button>
+                </h2>
+                <div id="solution-one-e" class="accordion-collapse collapse">
+                  <div class="accordion-body bg-light text-dark mb-3">
+                    <pre><code>
+import seaborn as sns
+
+df_enrich_rainy = df_enrich[df_enrich['Interval Rain'] > 0]
+plt.figure(figsize=(15, 10))
+ax = sns.regplot(x='Humidity', y='Rain Intensity', data=df_enrich_rainy)
+ax.set_title('Scatterplot of Humidity vs Rain Intensity', fontsize='xx-large')
+ax.set_xlabel('Humidity', fontsize='x-large')
+ax.set_ylabel('Rain Intensity', fontsize='x-large')
+                    </code></pre>
+                    <strong>Output:</strong>
+                    <div class="dataframe">
+                      <img src="img/q1e.png">
+                    </div>
+                  </div>
+                </div>
+              </li>
+            </ol>
+            <h2 class="mb-3">Question 2</h2>
+            <p>AKAN DATANG...</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="p-5 bg-dark text-white text-center position-relative">
+      <div class="container">
+        <p class="lead">This is the footer where I am supposed to write some copyright messages</p>
+        <a href="#" class="position-absolute bottom-0 end-0 p-5">
+          <i class="bi bi-arrow-up-circle h1"></i>
+        </a>
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+  </body>
+</html>
